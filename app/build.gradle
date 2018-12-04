@@ -12,9 +12,13 @@ android {
     }
     buildTypes {
         debug {
+            buildConfigField "String", "GOOGLE_PLACES_URL", "\"${GOOGLE_PLACES_API_URL}\""
+            buildConfigField "String", "GOOGLE_PLACES_API_KEY", "\"${GOOGLE_PLACES_API_KEY}\""
             minifyEnabled false
         }
         release {
+            buildConfigField "String", "GOOGLE_PLACES_URL", "\"${GOOGLE_PLACES_API_URL}\""
+            buildConfigField "String", "GOOGLE_PLACES_API_KEY", "\"${GOOGLE_PLACES_API_KEY}\""
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

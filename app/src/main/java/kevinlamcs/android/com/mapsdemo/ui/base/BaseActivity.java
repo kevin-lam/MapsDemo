@@ -2,34 +2,34 @@ package kevinlamcs.android.com.mapsdemo.ui.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
+import kevinlamcs.android.com.mapsdemo.R;
 
-public abstract class BaseActivity<V extends BaseViewModel> extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     protected abstract int getLayoutId();
-    protected abstract V getViewModel();
-    protected abstract void subscribeToViewModelChanges();
-
-    private V viewModel;
+    protected abstract void attachFragment();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutId());
         ButterKnife.bind(this);
-        viewModel = getViewModel();
-        subscribeToViewModelChanges();
+        if (firstTimeCreated(savedInstanceState)) attachFragment();
     }
 
-    @Override
-    protected void onDestroy() {
-        unSubscribeToViewModelChanges();
-        super.onDestroy();
+    private boolean firstTimeCreated(Bundle savedInstanceState) {
+        return savedInstanceState == null;
     }
 
-    private void unSubscribeToViewModelChanges() {
-        viewModel.clearDisposable();
+    public void displayFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_container, fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
